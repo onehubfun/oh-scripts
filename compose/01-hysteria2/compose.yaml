@@ -1,0 +1,16 @@
+services:
+  hysteria2:
+    container_name: ${CONTAINER_NAME}
+    image: tobyxdd/hysteria:${IMAGE_VERSION}
+    restart: always
+    network_mode: host
+    volumes:
+      - ${VOLUMES_FULLCHAIN_CER_PATH}:/ssl/fullchain.cer
+      - ${VOLUMES_PRIVATE_KEY_PATH}:/ssl/private.key
+      - ${VOLUMES_PATH}/config.yaml:/etc/config.yaml
+    command: ["server", "-c", "/etc/config.yaml"]
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: 1

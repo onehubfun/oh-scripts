@@ -11,3 +11,15 @@
 ```shell
 bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/one-shell/main/docker.sh)
 ```
+
+## 部署应用
+
+使用 Docker Compose 部署应用。
+
+```shell
+bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/one-shell/main/deploy.sh)
+```
+
+### 支持应用列表
+
++ [Hysteria2](https://v2.hysteria.network/)：强大、快速、抗审查的代理工具。
