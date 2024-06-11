@@ -13,6 +13,7 @@ NC='\033[0m' # No Color
 
 # GitHub API URL
 GITHUB_API_URL="https://api.github.com/repos/onehubfun/one-shell/contents/compose"
+GITHUB_RAW_URL="https://raw.githubusercontent.com/onehubfun/one-shell/main/compose"
 
 # 安装依赖项
 install_dependencies() {
@@ -77,21 +78,21 @@ parse_folder_names() {
 
 # 下载文件夹内容
 download_folder() {
-  local folder_url=$1
+  local folder_path=$1
   local dest_dir=$2
 
   mkdir -p "$dest_dir"
   cd "$dest_dir"
 
-  local contents=$(curl -s $folder_url | jq -r '.[] | .name + " " + .type')
+  local contents=$(curl -s "$GITHUB_API_URL/$folder_path" | jq -r '.[] | .name + " " + .type')
   for item in $contents; do
     local name=$(echo $item | cut -d' ' -f1)
     local type=$(echo $item | cut -d' ' -f2)
 
     if [ "$type" == "file" ]; then
-      curl -s -O "$folder_url/$name"
+      curl -s -O "$GITHUB_RAW_URL/$folder_path/$name"
     elif [ "$type" == "dir" ]; then
-      download_folder "$folder_url/$name" "$dest_dir/$name"
+      download_folder "$folder_path/$name" "$dest_dir/$name"
     fi
   done
 }
@@ -128,7 +129,7 @@ main() {
   cd "$install_path/$app_name"
 
   echo "下载应用文件..."
-  download_folder "$GITHUB_API_URL/$selected_folder" "$install_path/$app_name"
+  download_folder "$selected_folder" "$install_path/$app_name"
 
   if [ -f "deploy.sh" ]; then
     echo "运行 deploy.sh 脚本..."
