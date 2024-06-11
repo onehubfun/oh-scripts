@@ -14,6 +14,36 @@ NC='\033[0m' # No Color
 # GitHub API URL
 GITHUB_API_URL="https://api.github.com/repos/onehubfun/one-shell/contents/compose"
 
+# 安装依赖项
+install_dependencies() {
+  echo "安装依赖项..."
+
+  if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    OS=$ID
+    VERSION=$VERSION_ID
+  else
+    echo "无法检测到操作系统版本"
+    exit 1
+  fi
+
+  case "$OS" in
+    ubuntu|debian)
+      apt-get update
+      apt-get install -y curl jq
+      ;;
+    centos|fedora)
+      yum install -y curl jq
+      ;;
+    *)
+      echo "不支持的操作系统: $OS"
+      exit 1
+      ;;
+  esac
+
+  echo -e "${GREEN}依赖项安装完成${NC}"
+}
+
 # 显示横幅和系统信息
 show_banner() {
   echo -e "========================================"
@@ -68,6 +98,7 @@ download_folder() {
 
 # 主函数
 main() {
+  install_dependencies
   show_banner
   folders=($(get_compose_contents))
 
