@@ -44,6 +44,10 @@ install_dependencies() {
         apt-get update
         apt-get install -y jq
       fi
+      if ! command -v vim &> /dev/null; then
+        apt-get update
+        apt-get install -y vim
+      fi
       ;;
     centos|fedora)
       if ! command -v curl &> /dev/null; then
@@ -51,6 +55,9 @@ install_dependencies() {
       fi
       if ! command -v jq &> /dev/null; then
         yum install -y jq
+      fi
+      if ! command -v vim &> /dev/null; then
+        yum install -y vim
       fi
       ;;
     *)
@@ -60,6 +67,7 @@ install_dependencies() {
   esac
 
   echo -e "${GREEN}依赖项检查和安装完成${NC}"
+  clear  # 添加清屏操作
 }
 
 # 显示横幅和系统信息
@@ -116,8 +124,8 @@ download_folder() {
   done
 }
 
-# 选择并下载应用
-select_and_download_app() {
+# 选择应用
+select_app() {
   folders=($(get_compose_contents))
 
   echo "应用列表："
@@ -138,7 +146,12 @@ select_and_download_app() {
     exit 1
   fi
 
-  app_name=$(echo $selected_folder | cut -d'-' -f2-)
+  echo $selected_folder
+}
+
+# 设置安装路径
+set_install_path() {
+  local app_name=$1
   read -rp "请输入安装路径 (默认: /opt/stacks): " install_path
   install_path=${install_path:-/opt/stacks}
 
@@ -155,16 +168,43 @@ select_and_download_app() {
   fi
 
   mkdir -p "$install_path/$app_name"
+  echo $install_path
+}
+
+# 检查并编辑环境变量文件
+check_and_edit_env_files() {
+  local install_path=$1
+  local app_name=$2
+
   cd "$install_path/$app_name"
 
-  echo "下载应用文件..."
-  download_folder "$selected_folder" "$install_path/$app_name"
-
-  if [ -f "deploy.sh" ]; then
-    echo "运行 deploy.sh 脚本..."
-    bash deploy.sh "$install_path/$app_name"
+  env_files=$(find . -type f -name "*.env" -o -name "*.env.*")
+  if [ -n "$env_files" ]; then
+    echo "检测到以下环境变量文件，请根据需要修改："
+    for file in $env_files; do
+      echo "$file"
+      read -rp "是否编辑此文件? (默认: y): " edit_file
+      edit_file=${edit_file:-y}
+      if [[ $edit_file =~ ^(yes|y|Y)$ ]]; then
+        vim "$file"
+      fi
+    done
   fi
+}
 
+# 运行部署脚本
+run_deploy_script() {
+  local install_path=$1
+  local app_name=$2
+
+  if [ -f "$install_path/$app_name/deploy.sh" ]; then
+    echo "运行 deploy.sh 脚本..."
+    bash "$install_path/$app_name/deploy.sh" "$install_path/$app_name"
+  fi
+}
+
+# 启动应用
+start_application() {
   read -rp "是否启动应用? (默认: y): " start_app
   start_app=${start_app:-y}
 
@@ -181,9 +221,18 @@ main() {
   define_colors
   define_urls
   install_dependencies
-  clear
   show_banner
-  select_and_download_app
+
+  selected_folder=$(select_app)
+  app_name=$(echo $selected_folder | cut -d'-' -f2-)
+  install_path=$(set_install_path "$app_name")
+
+  echo "下载应用文件..."
+  download_folder "$selected_folder" "$install_path/$app_name"
+
+  check_and_edit_env_files "$install_path" "$app_name"
+  run_deploy_script "$install_path" "$app_name"
+  start_application
 }
 
 # 执行主函数
