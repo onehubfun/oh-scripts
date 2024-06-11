@@ -23,3 +23,5 @@ bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/one-shell/main/depl
 ### 支持应用列表
 
 + [Hysteria2](https://v2.hysteria.network/)：强大、快速、抗审查的代理工具。
++ [Nginx-UI](https://nginxui.com/)：Nginx 可视化管理面板的新选择。
++ [LobeChat](https://lobehub.com/)：将你的 AI 团队汇聚一处：根据个性化需求灵活定制智能助手功能，解决问题，提升生产, 探索未来工作模式。
