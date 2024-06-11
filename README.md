@@ -1,6 +1,6 @@
 # oh-shell
 
-经由 GPT 生成的 Bash Shell 脚本。
+完全由 GPT 生成的 Bash Shell 脚本。
 
 ## GPT 提示词
 
@@ -25,3 +25,6 @@ bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/one-shell/main/depl
 + [Hysteria2](https://v2.hysteria.network/)：强大、快速、抗审查的代理工具。
 + [Nginx-UI](https://nginxui.com/)：Nginx 可视化管理面板的新选择。
 + [LobeChat](https://lobehub.com/)：将你的 AI 团队汇聚一处：根据个性化需求灵活定制智能助手功能，解决问题，提升生产, 探索未来工作模式。
++ [AList](https://alist.nn.ci/)：一个支持多种存储的文件列表程序。
++ [DDNS-GO](https://github.com/jeessy2/ddns-go)：简单易用的 DDNS。
++ [Gitea](https://docs.gitea.com/)：轻量级的 DevOps 平台软件。

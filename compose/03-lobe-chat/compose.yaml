@@ -1,7 +1,7 @@
 services:
   lobe-chat:
-    image: lobehub/lobe-chat:${IMAGE_VERSION}
     container_name: ${CONTAINER_NAME}
+    image: lobehub/lobe-chat:${IMAGE_VERSION}
     restart: always
     ports:
       - ${HOST_PORT}:3210

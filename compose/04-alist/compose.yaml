@@ -1,0 +1,18 @@
+services:
+  alist:
+    container_name: ${CONTAINER_NAME}
+    image: xhofe/alist:${IMAGE_VERSION}
+    restart: always
+    ports:
+      - ${HOST_PORT}:5244
+    volumes:
+      - ${VOLUMES_PATH}/data:/opt/alist/data
+    environment:
+      - PUID=0
+      - PGID=0
+      - UMASK=022
+    networks:
+      - onenet
+networks:
+  onenet:
+    external: true
