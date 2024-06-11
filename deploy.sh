@@ -1,19 +1,25 @@
 #!/bin/bash
 
 # 检查是否以root用户运行
-if [ "$EUID" -ne 0 ]; then
-  echo "请以root用户运行此脚本"
-  exit 1
-fi
+check_root() {
+  if [ "$EUID" -ne 0 ]; then
+    echo "请以root用户运行此脚本"
+    exit 1
+  fi
+}
 
 # 定义颜色
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-NC='\033[0m' # No Color
+define_colors() {
+  GREEN='\033[0;32m'
+  RED='\033[0;31m'
+  NC='\033[0m' # No Color
+}
 
 # GitHub API URL
-GITHUB_API_URL="https://api.github.com/repos/onehubfun/one-shell/contents/compose"
-GITHUB_RAW_URL="https://raw.githubusercontent.com/onehubfun/one-shell/main/compose"
+define_urls() {
+  GITHUB_API_URL="https://api.github.com/repos/onehubfun/one-shell/contents/compose"
+  GITHUB_RAW_URL="https://raw.githubusercontent.com/onehubfun/one-shell/main/compose"
+}
 
 # 检查并安装依赖项
 install_dependencies() {
@@ -99,7 +105,7 @@ download_folder() {
   for item in $contents; do
     local name=$(echo $item | jq -r '.name')
     local type=$(echo $item | jq -r '.type')
-    echo "名称：$name 类型：$type"
+
     if [ "$type" == "file" ]; then
       download_url="$GITHUB_RAW_URL/$folder_path/$name"
       echo "下载文件: $download_url"
@@ -110,10 +116,8 @@ download_folder() {
   done
 }
 
-# 主函数
-main() {
-  install_dependencies
-  show_banner
+# 选择并下载应用
+select_and_download_app() {
   folders=($(get_compose_contents))
 
   echo "应用列表："
@@ -161,14 +165,25 @@ main() {
     bash deploy.sh "$install_path/$app_name"
   fi
 
-  read -rp "是否启动应用? (默认: 是): " start_app
-  start_app=${start_app:-是}
+  read -rp "是否启动应用? (默认: y): " start_app
+  start_app=${start_app:-y}
 
-  if [[ $start_app =~ ^(是|yes|y|Y)$ ]]; then
+  if [[ $start_app =~ ^(yes|y|Y)$ ]]; then
     docker compose up -d
   fi
 
   echo -e "${GREEN}应用安装完成${NC}"
+}
+
+# 主函数
+main() {
+  check_root
+  define_colors
+  define_urls
+  install_dependencies
+  clear
+  show_banner
+  select_and_download_app
 }
 
 # 执行主函数

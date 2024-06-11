@@ -19,10 +19,10 @@ read -p "请输入验证密码（默认随机生成32位UUID）: " password
 password=${password:-$(generate_random_uuid)}
 
 # 提示用户是否开启端口跳跃
-read -p "是否开启端口跳跃？(y/n): " enable_port_hop
+read -p "是否开启端口跳跃？(Y/n): " enable_port_hop
 enable_port_hop=${enable_port_hop:-y}
 
-if [[ "$enable_port_hop" == "y" ]]; then
+if [[ $enable_port_hop =~ ^(是|yes|y|Y)$ ]]; then
     read -p "请输入端口跳跃起始范围（默认31000）: " port_hop_start
     read -p "请输入端口跳跃结束范围（默认32000）: " port_hop_end
     port_hop_start=${port_hop_start:-31000}
@@ -44,7 +44,7 @@ else
 fi
 
 # 提示用户输入服务器域名
-read -p "请输入服务器域名: " server_domain
+read -p "请输入服务器域名（example.com）: " server_domain
 
 # 生成配置文件config.yaml
 cat << EOF > "$1/config.yaml"
