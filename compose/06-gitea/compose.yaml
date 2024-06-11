@@ -1,0 +1,39 @@
+services:
+  server:
+    container_name: ${CONTAINER_NAME}
+    image: gitea/gitea:${IMAGE_VERSION}
+    environment:
+      - USER_UID=${USER_UID}
+      - USER_GID=${USER_GID}
+      - APP_NAME=${APP_NAME}
+      - RUN_MODE=${RUN_MODE}
+      - DOMAIN=${DOMAIN}
+      - SSH_DOMAIN=${SSH_DOMAIN}
+      - SSH_PORT=${SSH_PORT}
+      - SSH_LISTEN_PORT=${SSH_LISTEN_PORT}
+      - DISABLE_SSH=${DISABLE_SSH}
+      - HTTP_PORT=${HTTP_PORT}
+      - ROOT_URL=${ROOT_URL}
+      - LFS_START_SERVER=${LFS_START_SERVER}
+      - DB_TYPE=${DB_TYPE}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWD=${DB_PASSWD}
+      - INSTALL_LOCK=${INSTALL_LOCK}
+      - SECRET_KEY=${SECRET_KEY}
+      - DISABLE_REGISTRATION=${DISABLE_REGISTRATION}
+      - REQUIRE_SIGNIN_VIEW=${REQUIRE_SIGNIN_VIEW}
+    restart: always
+    ports:
+      - "${HTTP_PORT}:3000"
+      - "${SSH_PORT}:22"
+    volumes:
+      - ${VOLUMES_PATH}/data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    networks:
+      - onenet
+networks:
+  onenet:
+    external: true
