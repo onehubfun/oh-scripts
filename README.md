@@ -9,7 +9,7 @@
 ## 安装 / 卸载 Docker
 
 ```shell
-bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/one-shell/main/docker.sh)
+bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/oh-scripts/main/docker.sh)
 ```
 
 ## 部署应用
@@ -17,7 +17,7 @@ bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/one-shell/main/dock
 使用 Docker Compose 部署应用。
 
 ```shell
-bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/one-shell/main/deploy.sh)
+bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/oh-scripts/main/deploy.sh)
 ```
 
 ### 支持应用列表
