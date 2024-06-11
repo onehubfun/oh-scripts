@@ -13,17 +13,17 @@ NC='\033[0m' # No Color
 
 # 显示横幅和系统信息
 show_banner() {
-  echo "========================================"
-  echo "=   ___             _   _       _      ="
-  echo "=  / _ \ _ __   ___| | | |_   _| |__   ="
-  echo "= | | | | '_ \ / _ \ |_| | | | | '_ \  ="
-  echo "= | |_| | | | |  __/  _  | |_| | |_) | ="
-  echo "=  \___/|_| |_|\___|_| |_|\__._|_.__/  ="
-  echo "========================================"
-  echo -e "${GREEN}操作系统: $(uname -o)${NC}"
-  echo -e "${GREEN}内核版本: $(uname -r)${NC}"
-  echo -e "${GREEN}主机名: $(hostname)${NC}"
-  echo -e "${GREEN}CPU架构: $(uname -m)${NC}"
+  echo -e "========================================"
+  echo -e "=   ${RED}___${NC}             ${RED}_   _${NC}       _      ="
+  echo -e "=  ${RED}/ _ \ ${NC}_ __   ___${RED}| | | |${NC}_   _| |__   ="
+  echo -e "= ${RED}| | | |${NC} '_ \ / _ \\ ${RED}|_| |${NC} | | | '_ \  ="
+  echo -e "= ${RED}| |_| |${NC} | | |  __/${RED}  _  |${NC} |_| | |_) | ="
+  echo -e "=  ${RED}\___/${NC}|_| |_|\___${RED}|_| |_|${NC}\__._|_.__/  ="
+  echo -e "========================================"
+  echo -e "操作系统: ${GREEN}$(uname -o)${NC}"
+  echo -e "内核版本: ${GREEN}$(uname -r)${NC}"
+  echo -e "主机名: ${GREEN}$(hostname)${NC}"
+  echo -e "CPU架构: ${GREEN}$(uname -m)${NC}"
   echo "========================================"
 }
 
@@ -40,21 +40,17 @@ fi
 # 检查Docker和Docker Compose的安装情况
 check_docker() {
   if command -v docker &> /dev/null; then
-    echo -e "${GREEN}Docker 已安装，版本号：$(docker --version)${NC}"
+    echo -e "${GREEN}$(docker --version)${NC}"
   else
-    echo -e "${RED}Docker 未安装${NC}"
+    echo -e "Docker ${RED}未安装${NC}"
   fi
 
   if command -v docker-compose &> /dev/null; then
-    if docker-compose --version &> /dev/null; then
-      echo -e "${GREEN}Docker Compose v1 已安装，版本号：$(docker-compose --version)${NC}"
-    else
-      echo -e "${RED}Docker Compose v1 命令存在，但无法执行${NC}"
-    fi
-  elif docker compose version &> /dev/null; then
-    echo -e "${GREEN}Docker Compose v2 已安装，版本号：$(docker compose version)${NC}"
+    echo -e "${GREEN}$(docker-compose --version)${NC}"
+  elif command -v docker &> /dev/null && docker compose version &> /dev/null; then
+    echo -e "${GREEN}$(docker compose version)${NC}"
   else
-    echo -e "${RED}Docker Compose 未安装${NC}"
+    echo -e "Docker Compose ${RED}未安装${NC}"
   fi
   echo "========================================"
 }
@@ -103,6 +99,7 @@ uninstall_docker() {
     ubuntu|debian)
       apt-get purge -y docker-ce docker-ce-cli containerd.io
       apt-get autoremove -y --purge
+      rm -rf /usr/share/keyrings/docker-archive-keyring.gpg
       rm -rf /var/lib/docker
       rm -rf /var/lib/containerd
       ;;
@@ -128,13 +125,13 @@ uninstall_docker() {
 # 主函数
 main() {
   show_banner
-  echo "Docker 一键安装/卸载脚本"
   check_docker
 
   echo "请选择操作："
-  echo "1) 安装"
-  echo "2) 卸载"
-  read -rp "输入选项 (1 或 2): " choice
+  echo "1) 安装 Docker"
+  echo "2) 卸载 Docker"
+  echo "3) 退出脚本"
+  read -rp "输入选项: " choice
 
   case "$choice" in
     1)
@@ -143,9 +140,12 @@ main() {
     2)
       uninstall_docker
       ;;
+    3)
+      exit 0
+      ;;
     *)
       echo "无效的选项"
-      exit 1
+      exit 0
       ;;
   esac
 }
