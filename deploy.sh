@@ -15,9 +15,9 @@ NC='\033[0m' # No Color
 GITHUB_API_URL="https://api.github.com/repos/onehubfun/one-shell/contents/compose"
 GITHUB_RAW_URL="https://raw.githubusercontent.com/onehubfun/one-shell/main/compose"
 
-# 安装依赖项
+# 检查并安装依赖项
 install_dependencies() {
-  echo "安装依赖项..."
+  echo "检查并安装依赖项..."
 
   if [ -f /etc/os-release ]; then
     . /etc/os-release
@@ -30,11 +30,22 @@ install_dependencies() {
 
   case "$OS" in
     ubuntu|debian)
-      apt-get update
-      apt-get install -y curl jq
+      if ! command -v curl &> /dev/null; then
+        apt-get update
+        apt-get install -y curl
+      fi
+      if ! command -v jq &> /dev/null; then
+        apt-get update
+        apt-get install -y jq
+      fi
       ;;
     centos|fedora)
-      yum install -y curl jq
+      if ! command -v curl &> /dev/null; then
+        yum install -y curl
+      fi
+      if ! command -v jq &> /dev/null; then
+        yum install -y jq
+      fi
       ;;
     *)
       echo "不支持的操作系统: $OS"
@@ -42,7 +53,7 @@ install_dependencies() {
       ;;
   esac
 
-  echo -e "${GREEN}依赖项安装完成${NC}"
+  echo -e "${GREEN}依赖项检查和安装完成${NC}"
 }
 
 # 显示横幅和系统信息
@@ -84,13 +95,15 @@ download_folder() {
   mkdir -p "$dest_dir"
   cd "$dest_dir"
 
-  local contents=$(curl -s "$GITHUB_API_URL/$folder_path" | jq -r '.[] | .name + " " + .type')
+  local contents=$(curl -s "$GITHUB_API_URL/$folder_path" | jq -c '.[]')
   for item in $contents; do
-    local name=$(echo $item | cut -d' ' -f1)
-    local type=$(echo $item | cut -d' ' -f2)
-
+    local name=$(echo $item | jq -r '.name')
+    local type=$(echo $item | jq -r '.type')
+    echo "名称：$name 类型：$type"
     if [ "$type" == "file" ]; then
-      curl -s -O "$GITHUB_RAW_URL/$folder_path/$name"
+      download_url="$GITHUB_RAW_URL/$folder_path/$name"
+      echo "下载文件: $download_url"
+      curl -s -O "$download_url"
     elif [ "$type" == "dir" ]; then
       download_folder "$folder_path/$name" "$dest_dir/$name"
     fi
@@ -125,6 +138,18 @@ main() {
   read -rp "请输入安装路径 (默认: /opt/stacks): " install_path
   install_path=${install_path:-/opt/stacks}
 
+  if [ -d "$install_path/$app_name" ]; then
+    read -rp "安装路径已存在，是否继续安装并删除原有文件夹？(默认: y): " continue_install
+    continue_install=${continue_install:-y}
+
+    if [[ $continue_install =~ ^(y|yes|Y)$ ]]; then
+      rm -rf "$install_path/$app_name"
+    else
+      echo -e "${RED}安装已取消${NC}"
+      exit 1
+    fi
+  fi
+
   mkdir -p "$install_path/$app_name"
   cd "$install_path/$app_name"
 
@@ -133,7 +158,7 @@ main() {
 
   if [ -f "deploy.sh" ]; then
     echo "运行 deploy.sh 脚本..."
-    bash deploy.sh
+    bash deploy.sh "$install_path/$app_name"
   fi
 
   read -rp "是否启动应用? (默认: 是): " start_app
