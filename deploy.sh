@@ -17,8 +17,8 @@ define_colors() {
 
 # GitHub API URL
 define_urls() {
-  GITHUB_API_URL="https://api.github.com/repos/onehubfun/one-shell/contents/compose"
-  GITHUB_RAW_URL="https://raw.githubusercontent.com/onehubfun/one-shell/main/compose"
+  GITHUB_API_URL="https://api.github.com/repos/onehubfun/oh-scripts/contents/compose"
+  GITHUB_RAW_URL="https://raw.githubusercontent.com/onehubfun/oh-scripts/main/compose"
 }
 
 # 检查并安装依赖项
