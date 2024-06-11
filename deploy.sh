@@ -126,11 +126,6 @@ download_folder() {
 
 # 选择应用
 select_app() {
-  folders=($(get_compose_contents))
-
-  echo "应用列表："
-  parse_folder_names "${folders[@]}"
-
   read -rp "请选择要安装的应用编号: " app_number
 
   selected_folder=""
@@ -178,7 +173,7 @@ check_and_edit_env_files() {
 
   cd "$install_path/$app_name"
 
-  env_files=$(find . -type f -name "*.env" -o -name "*.env.*")
+  env_files=$(find . -type f -name ".env" -o -name "*.env")
   if [ -n "$env_files" ]; then
     echo "检测到以下环境变量文件，请根据需要修改："
     for file in $env_files; do
@@ -223,7 +218,11 @@ main() {
   install_dependencies
   show_banner
 
+  # 展示可安装应用列表
+  folders=($(get_compose_contents))
+  parse_folder_names "${folders[@]}"
   selected_folder=$(select_app)
+
   app_name=$(echo $selected_folder | cut -d'-' -f2-)
   install_path=$(set_install_path "$app_name")
 
