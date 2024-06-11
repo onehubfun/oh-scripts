@@ -1,0 +1,20 @@
+services:
+  nginx-ui:
+    container_name: ${CONTAINER_NAME}
+    image: uozi/nginx-ui:${IMAGE_VERSION}
+    ports:
+      - ${HOST_HTTP_PORT}:80
+      - ${HOST_HTTPS_PORT}:443
+      - ${HOST_WEB_PORT}:9000
+    volumes:
+      - ${VOLUMES_PATH}/www:/var/www
+      - ${VOLUMES_PATH}/nginx:/etc/nginx
+      - ${VOLUMES_PATH}/nginx-ui:/etc/nginx-ui
+    restart: always
+    tty: true
+    stdin_open: true
+    networks:
+      - onenet
+networks:
+  onenet:
+    external: true

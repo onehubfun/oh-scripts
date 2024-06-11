@@ -198,6 +198,20 @@ run_deploy_script() {
   fi
 }
 
+# 检查或创建 Docker 网络
+ensure_docker_network() {
+    if ! docker network ls | grep -q "onenet"; then
+        echo "创建 Docker 网络 onenet..."
+        docker network create --driver bridge onenet
+        if [[ $? -ne 0 ]]; then
+            echo "Docker 网络创建失败。"
+            exit 1
+        fi
+    else
+        echo "Docker 网络 onenet 已存在。"
+    fi
+}
+
 # 启动应用
 start_application() {
   read -rp "是否启动应用? (默认: y): " start_app
@@ -205,6 +219,10 @@ start_application() {
 
   if [[ $start_app =~ ^(yes|y|Y)$ ]]; then
     docker compose up -d
+    if [[ $? -ne 0 ]]; then
+      echo "容器启动失败，请检查配置。"
+      exit 1
+    fi
   fi
 
   echo -e "${GREEN}应用安装完成${NC}"
@@ -231,6 +249,7 @@ main() {
 
   check_and_edit_env_files "$install_path" "$app_name"
   run_deploy_script "$install_path" "$app_name"
+  ensure_docker_network
   start_application
 }
 
