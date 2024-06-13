@@ -24,7 +24,9 @@ bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/oh-scripts/main/dep
 
 + [Hysteria2](https://v2.hysteria.network/)：强大、快速、抗审查的代理工具。
 + [Nginx-UI](https://nginxui.com/)：Nginx 可视化管理面板的新选择。
-+ [LobeChat](https://lobehub.com/)：将你的 AI 团队汇聚一处：根据个性化需求灵活定制智能助手功能，解决问题，提升生产, 探索未来工作模式。
++ [LobeChat](https://lobehub.com/)：个性化需求灵活定制智能助手功能，解决问题，提升生产, 探索未来工作模式。
 + [AList](https://alist.nn.ci/)：一个支持多种存储的文件列表程序。
 + [DDNS-GO](https://github.com/jeessy2/ddns-go)：简单易用的 DDNS。
 + [Gitea](https://docs.gitea.com/)：轻量级的 DevOps 平台软件。
++ [Joplin](https://joplinapp.org/)：开源笔记应用程序，记录您的所思所想并从任何设备安全地查阅笔记。
++ [OpenGist](https://github.com/thomiceli/opengist)：由 Git 提供支持的自托管 Pastebin，是 Github Gist 的开源替代品。
