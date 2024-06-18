@@ -30,3 +30,4 @@ bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/oh-scripts/main/dep
 + [Gitea](https://docs.gitea.com/)：轻量级的 DevOps 平台软件。
 + [Joplin](https://joplinapp.org/)：开源笔记应用程序，记录您的所思所想并从任何设备安全地查阅笔记。
 + [OpenGist](https://github.com/thomiceli/opengist)：由 Git 提供支持的自托管 Pastebin，是 Github Gist 的开源替代品。
++ [DeepLX](https://deeplx.owo.network/)：免费、快速、安全、简单的 DeepL 翻译 API。

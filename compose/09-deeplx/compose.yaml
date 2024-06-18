@@ -1,0 +1,14 @@
+services:
+  deeplx:
+    container_name: ${CONTAINER_NAME}
+    image: ghcr.io/owo-network/deeplx:${IMAGE_VERSION}
+    restart: always
+    ports:
+      - ${HOST_PORT}:1188
+    environment:
+      - TOKEN=${TOKEN}
+    networks:
+      - onenet
+networks:
+  onenet:
+    external: true
