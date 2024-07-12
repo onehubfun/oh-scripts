@@ -32,3 +32,4 @@ bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/oh-scripts/main/dep
 + [OpenGist](https://github.com/thomiceli/opengist)：由 Git 提供支持的自托管 Pastebin，是 Github Gist 的开源替代品。
 + [DeepLX](https://deeplx.owo.network/)：免费、快速、安全、简单的 DeepL 翻译 API。
 + [SearXNG](https://docs.searxng.org/)：一款免费、匿名、反跟踪的互联网元搜索引擎。
++ [Conduwuit](https://github.com/girlbossceo/conduwuit)：提供安全、分散式通信的开放式网络 Matrix  家庭服务。
