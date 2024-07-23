@@ -1,12 +1,12 @@
 services:
   homeserver:
-    container_name: ${CONTAINER_NAME}
-    image: girlbossceo/conduwuit:${IMAGE_VERSION}
+    container_name: ${CONDUWUIT_CONTAINER_NAME}
+    image: girlbossceo/conduwuit:${CONDUWUIT_IMAGE_VERSION}
     restart: unless-stopped
     ports:
-      - ${HOST_PORT}:${CONDUWUIT_PORT}
+      - ${CONDUWUIT_HOST_PORT}:${CONDUWUIT_PORT}
     volumes:
-      - ${VOLUMES_PATH}/db:/var/lib/conduwuit/
+      - ${CONDUWUIT_VOLUMES_PATH}/db:/var/lib/conduwuit/
     environment:
       - CONDUWUIT_SERVER_NAME=${CONDUWUIT_SERVER_NAME}
       - CONDUWUIT_DATABASE_PATH=${CONDUWUIT_DATABASE_PATH}
@@ -21,7 +21,14 @@ services:
       - CONDUWUIT_ADDRESS=${CONDUWUIT_ADDRESS}
     networks:
       - onenet
-
+  web:
+    container_name: ${FLUFFYCHAT_CONTAINER_NAME}
+    image: ghcr.io/onehubfun/fluffychat:${FLUFFYCHAT_IMAGE_VERSION}
+    restart: unless-stopped
+    ports:
+      - ${FLUFFYCHAT_HOST_PORT}:80
+    networks:
+      - onenet
 networks:
   onenet:
     external: true
