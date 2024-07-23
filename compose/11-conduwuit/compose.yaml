@@ -23,7 +23,7 @@ services:
       - onenet
   web:
     container_name: ${FLUFFYCHAT_CONTAINER_NAME}
-    image: ghcr.io/onehubfun/fluffychat:${FLUFFYCHAT_IMAGE_VERSION}
+    image: ghcr.io/krille-chan/fluffychat:${FLUFFYCHAT_IMAGE_VERSION}
     restart: unless-stopped
     ports:
       - ${FLUFFYCHAT_HOST_PORT}:80
