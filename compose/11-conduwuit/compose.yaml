@@ -27,6 +27,8 @@ services:
     restart: unless-stopped
     ports:
       - ${FLUFFYCHAT_HOST_PORT}:80
+    volumes:
+      - ${FLUFFYCHAT_VOLUMES_PATH}/web/config.json:/usr/share/nginx/html/config.json
     networks:
       - onenet
 networks:
