@@ -1,0 +1,35 @@
+services:
+  app:
+    container_name: ${APP_CONTAINER_NAME}
+    image: registry.cn-shanghai.aliyuncs.com/nocobase/nocobase:${APP_IMAGE_VERSION}
+    networks:
+      - onenet
+    depends_on:
+      - db
+    environment:
+      - APP_KEY=${APP_KEY}
+      - DB_DIALECT=${DB_DIALECT}
+      - DB_HOST=${DB_HOST}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ${APP_VOLUMES_PATH}/storage:/app/nocobase/storage
+    ports:
+      - ${APP_HOST_PORT}:80
+  db:
+    container_name: ${DB_CONTAINER_NAME}
+    image: registry.cn-shanghai.aliyuncs.com/nocobase/postgres:${DB_IMAGE_VERSION}
+    restart: always
+    command: postgres -c wal_level=logical
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ${DB_VOLUMES_PATH}/storage/db/postgres:/var/lib/postgresql/data
+    networks:
+      - onenet
+networks:
+  onenet:
+    external: true
