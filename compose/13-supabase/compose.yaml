@@ -344,7 +344,7 @@ services:
       - ./volumes/db/jwt.sql:/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql:Z
       - ./volumes/db/data:/var/lib/postgresql/data:Z
       - ./volumes/db/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:Z
-      - ./db-config:/etc/postgresql-custom
+      - db-config:/etc/postgresql-custom
     networks:
       - onenet
   vector:
@@ -375,3 +375,5 @@ services:
 networks:
   onenet:
     external: true
+volumes:
+  db-config:
