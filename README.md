@@ -34,3 +34,4 @@ bash <(curl -sSL https://raw.githubusercontent.com/onehubfun/oh-scripts/main/dep
 + [SearXNG](https://docs.searxng.org/)：一款免费、匿名、反跟踪的互联网元搜索引擎。
 + [Conduwuit](https://github.com/girlbossceo/conduwuit)：提供安全、分散式通信的开放式网络 Matrix  家庭服务。
 + [NocoBase](https://docs-cn.nocobase.com/)：一个极易扩展的开源无代码开发平台。
++ [QingLong](https://github.com/whyour/qinglong)：支持 Python3、JavaScript、Shell、Typescript 的定时任务管理平台。

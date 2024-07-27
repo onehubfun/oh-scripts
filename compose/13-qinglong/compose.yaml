@@ -1,0 +1,16 @@
+services:
+  web:
+    container_name: ${CONTAINER_NAME}
+    image: whyour/qinglong:${IMAGE_VERSION}
+    volumes:
+      - ${VOLUMES_PATH}/data:/ql/data
+    ports:
+      - ${HOST_PORT}:5700
+    environment:
+      - QlBaseUrl=${QL_BASE_URL}
+    restart: unless-stopped
+    networks:
+      - onenet
+networks:
+  onenet:
+    external: true
